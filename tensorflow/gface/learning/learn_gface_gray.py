@@ -12,11 +12,13 @@ from tensorflow.python.framework import graph_io
 
 from tensorflow.python import keras
 
+from tensorflow.python.keras.applications.vgg16 import VGG16
+
 from tensorflow.python.keras import backend as K
-from tensorflow.python.keras import initializers
+from tensorflow.python.keras import initializers, optimizers
 from tensorflow.python.keras.layers import Conv2D, Convolution2D, MaxPooling2D
-from tensorflow.python.keras.layers import Dense, Dropout, Activation, Flatten
-from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Input, Dense, Dropout, Activation, Flatten, InputLayer
+from tensorflow.python.keras.models import Sequential, Model
 from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils import np_utils
 from sklearn.model_selection import train_test_split
@@ -26,12 +28,12 @@ nb_classes = 3 #class count
 img_rows, img_cols = 64, 64 # image size 
 # img_rows, img_cols = 127, 128
 
-ary = np.load("gface.npz")['arr_0'].reshape([-1, 64, 64]).astype(np.float32) / 15
-X_train = np.zeros([nb_classes * 40, img_rows, img_cols], dtype=np.float32)
-for i in range(nb_classes * 40):
+ary = np.load("gface.npz")['arr_0'].reshape([-1, 64, 64]).astype(np.float32) / 1 #15
+X_train = np.zeros([nb_classes * 360, img_rows, img_cols], dtype=np.float32)
+for i in range(nb_classes * 360):
     X_train[i] = scipy.misc.imresize(ary[i], (img_rows, img_cols), mode='F')
     # X_train[i] = ary[i]
-Y_train = np.repeat(np.arange(nb_classes), 40)
+Y_train = np.repeat(np.arange(nb_classes), 360)
 
 X_train, X_test, Y_train, Y_test = train_test_split(X_train, Y_train, test_size=0.2)
 
@@ -64,14 +66,14 @@ def m6_1():
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.2))
 
     model.add(Conv2D(64, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1)))
     model.add(Activation('relu'))
     model.add(Conv2D(64, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.2))
 
     model.add(Flatten())
     model.add(Dense(256, kernel_initializer=initializers.TruncatedNormal(stddev=0.1)))
@@ -85,18 +87,63 @@ def classic_neural():
     model.add(Flatten(input_shape=input_shape))
     model.add(Dense(256))
     model.add(Activation('relu'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.2))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
+def test01():
+    model.add(Conv2D(input_shape=input_shape, filters=32,kernel_size=(3, 3), strides=(1, 1), padding="same"))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
 
-m6_1()
+    model.add(Conv2D(filters=32, kernel_size=(3, 3), strides=(1, 1), padding="same"))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Conv2D(filters=32, kernel_size=(3, 3), strides=(1, 1), padding="same"))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Flatten())
+    model.add(Dense(256))
+    model.add(Activation("sigmoid"))
+    model.add(Dense(128))
+    model.add(Activation('sigmoid'))
+    model.add(Dense(nb_classes))
+    model.add(Activation('softmax'))
+
+def vgg_test01():
+
+    global model
+
+    dummy_input_layer = Sequential([
+        InputLayer(input_shape=(64, 64, 3))
+    ])
+
+    input_tensor = Input(shape=(64, 64, 3))
+    vgg16 = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
+
+#    model.add(Flatten(input_shape=vgg16.output_shape[1:]))
+    model.add(Flatten())
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(nb_classes, activation='softmax'))
+
+    vgg_model = Model(inputs=vgg16.input, outputs=model(vgg16.output))
+
+    for layer in vgg_model.layers[:15]:
+        layer.trainable = False
+
+    model = Sequential([dummy_input_layer, vgg_model, model])
+
+#vgg_test01()
+test01()
+#m6_1()
 # classic_neural()
 
 model.summary()
-model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
-model.fit_generator(datagen.flow(X_train, Y_train, batch_size=16), steps_per_epoch=X_train.shape[0],epochs=20, validation_data=(X_test, Y_test))
+model.compile(loss='categorical_crossentropy',optimizer=optimizers.SGD(lr=1e-3, momentum=0.9),metrics=['accuracy'])
+
+#model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
+model.fit_generator(datagen.flow(X_train, Y_train, batch_size=16), steps_per_epoch=X_train.shape[0],epochs=80, validation_data=(X_test, Y_test))
 #epochs=400
 
 # additional
