@@ -1,6 +1,6 @@
 import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
-kerasBKED = os.environ["KERAS_BACKEND"] 
+kerasBKED = os.environ["KERAS_BACKEND"]
 print(kerasBKED)
 
 import numpy as np
@@ -21,9 +21,9 @@ from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils import np_utils
 from sklearn.model_selection import train_test_split
 
-nb_classes = 3 #class count 
+nb_classes = 3 #class count
 # input image dimensions
-img_rows, img_cols = 128, 128 # image size 
+img_rows, img_cols = 128, 128 # image size
 # img_rows, img_cols = 127, 128
 
 ary = np.load("gface.npz")['arr_0'].reshape([-1, 64, 64, 3]).astype(np.float32) / 15
@@ -134,4 +134,3 @@ graph_io.write_graph(constant_graph, output_dir, output_text_name, as_text=True)
 print('saved graph .pb at: {0}\nsaved graph .txt at: {1}'.format(
         os.path.join(output_dir, output_graph_name),
         os.path.join(output_dir, output_text_name)))
-
