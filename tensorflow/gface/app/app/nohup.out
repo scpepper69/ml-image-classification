@@ -1,0 +1,67 @@
+ * Serving Flask app "gface" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:9007/ (Press CTRL+C to quit)
+35.225.216.182 - - [27/Mar/2019 01:41:45] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 01:50:04] "GET / HTTP/1.0" 200 -
+ * Serving Flask app "gface" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:9007/ (Press CTRL+C to quit)
+35.225.216.182 - - [27/Mar/2019 02:09:15] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:10:09] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:10:10] "GET /uploads/gray_images_1553480255_3.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:11:25] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:11:26] "GET /uploads/gray_images_1553480256_39.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:21:30] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:21:31] "GET /uploads/gray_images_1553480258_114.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:24:30] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:24:30] "GET /uploads/8._1000132263_thum.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:24:44] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 02:24:44] "GET /uploads/13._ecms_154_2927_o_1ck1ogh6s1toi63u1hi319re12jf28.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 03:59:01] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:01:01] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:01:32] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:07:43] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:07:46] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:10:35] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:10:36] "GET /uploads/5._main2017.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:10:49] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:12:27] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:43:42] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:45:25] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:55:26] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:55:38] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:55:42] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [27/Mar/2019 04:57:33] "GET / HTTP/1.0" 200 -
+ * Serving Flask app "gface" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:9007/ (Press CTRL+C to quit)
+35.225.216.182 - - [28/Mar/2019 15:29:40] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:29:41] "GET /uploads/9._latest_cb20171020165642_1553786980.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:29:49] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:29:49] "GET /uploads/2._latest_cb20180630134003_1553786989.jpg HTTP/1.0" 200 -
+ * Serving Flask app "gface" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:9007/ (Press CTRL+C to quit)
+35.225.216.182 - - [28/Mar/2019 15:32:10] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:32:29] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:32:29] "GET /uploads/0_rx-178_-10thr_1553787149.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:35:50] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:37:41] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:37:45] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:37:55] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:37:55] "GET /uploads/1_rx-178_0_1553787475.jpg HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:38:20] "GET / HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:38:43] "POST /send HTTP/1.0" 200 -
+35.225.216.182 - - [28/Mar/2019 15:38:44] "GET /uploads/0_rx-178_-10thr_1553787523.jpg HTTP/1.0" 200 -
