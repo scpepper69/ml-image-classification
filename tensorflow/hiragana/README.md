@@ -1,2 +1,6 @@
-# ML Space
-Sample programs for machine learning.
+# Japanese HIRAGANA prediction application
+
+##Common Prepatration
+- Docker
+- Python 3
+
