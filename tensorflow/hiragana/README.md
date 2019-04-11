@@ -29,7 +29,7 @@ Please check parent folder.
 ## Architecture
 
 - Learning Model : Tensorflow & Keras
-
 - Model Server : GraphPipe
-
 - Application : Python (Flask)
+
+<img class="aligncenter size-full" src="https://drive.google.com/uc?export=view&id=1lT1dl5usZaU0laE9H1ig9tPpetn6sMiI">
