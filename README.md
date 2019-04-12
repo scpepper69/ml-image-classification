@@ -9,3 +9,4 @@ Sample applications are also published in [my blog]([http://www.scpepper.tokyo](
 
 1. MNIST
 2. Japanese HIRAGANA
+
