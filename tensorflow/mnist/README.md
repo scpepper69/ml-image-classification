@@ -1,4 +1,4 @@
-# Japanese HIRAGANA Prediction Application
+# MNIST Prediction Application
 
 
 
@@ -8,7 +8,7 @@ Sample application is published on [my blog](https://www.scpepper.tokyo/2019/01/
 
 ## Application Image
 
-<img class="aligncenter size-full" src="https://drive.google.com/uc?export=view&id=1ff-ZQe95G--1t4MAL7l4EVcQR0nGanIV">
+<img class="aligncenter size-full" src="https://drive.google.com/uc?export=view&id=1-k8yK38LhMMVJ4ZZt4osTjPSafMR6xNU">
 
 
 ## How to deploy
@@ -27,7 +27,7 @@ Please see README.md at parent directory.
 1. Startup app.py
 
    ```bash
-   # nohup python ./app/app/hiragana.py &
+   # nohup python ./app/app/app.py &
    ```
 
    
