@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tensorflow HIRAGANA Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="static/js/app.js"></script>
+    <link rel="stylesheet" href="static/css/app.css">
+  </head>
+  <body onload="mam_draw_init();">
+    <div align="center">
+      <h2>Please write down HIRAGANA(あ-ん).</h2>
+      <div class="canvas" id="candiv">
+          <canvas id="can" width="280px" height="280px"></canvas>
+      </div>
+      <form action="/" method="post">
+          <div></div>
+          <button type="button" id="img" name="img" onClick="sendImage();" value="Predict" class="send-button">Predict</button>
+          <div></div>
+          <button type="button" onClick="clearCan();" value="Clear" class="clear-button">Clear</button>
+      </form>
+      <div id="answer"></div>
+      <div id="top1"></div>
+      <div id="top2"></div>
+      <div id="top3"></div>
+    </div>
+  </body>
+</html>
