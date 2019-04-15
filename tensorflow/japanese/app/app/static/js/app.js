@@ -77,6 +77,7 @@ function sendImage() {
     })
     .done( (data) => {
         $('#answer').html('The answer is <span class="answer">'+data['ans']+'</span> .')
+        $('#top1').html(data['yomi'])
         $('#top1').html(data['t1'])
         $('#top2').html(data['t2'])
         $('#top3').html(data['t3'])

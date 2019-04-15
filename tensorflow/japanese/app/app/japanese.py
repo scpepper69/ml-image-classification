@@ -13,13 +13,17 @@ import requests
 from graphpipe import remote
 from matplotlib import pylab as plt
 
-hiragana = []
-with open("./hiragana_list.txt", "r") as f:
+import urllib.request
+#import helper.directory
+import json
+
+japanese = []
+with open("./japanese_list.txt", "r") as f:
     for line in f:
-        hiragana.append(line)
+        japanese.append(line.rstrip('\n'))
 
 def hira(n):
-    return hiragana[n]
+    return japanese[n]
 
 app = Flask(__name__)
 CORS(app) # ローカルへAjaxでPOSTするため
@@ -27,9 +31,9 @@ CORS(app) # ローカルへAjaxでPOSTするため
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        ans,t1,t2,t3 = get_answer(request)
+        ans,yomi,t1,t2,t3 = get_answer(request)
 #        return jsonify({'ans': ans})
-        return jsonify({'ans': ans, 't1': t1, 't2': t2, 't3': t3})
+        return jsonify({'ans': ans, 'yomi': yomi, 't1': t1, 't2': t2, 't3': t3})
     else:
         return render_template('index.html')
 
@@ -42,16 +46,16 @@ def result(img):
     img = img.reshape(1, 32, 32, 1)
     img = img.astype(np.float32)
     img = np.multiply(img, 1.0 / 255.0)
-    pred = remote.execute("http://localhost:9003", img)
+    pred = remote.execute("http://localhost:9012", img)
     r = np.argmax(pred, axis=1)
     pp = pred*100
 #    top1 = str(np.argsort(-pp)[0][0])+ " (" +str(int(np.sort(-pp)[0][0]*-1))+"%)"
-    top1 = hiragana[np.argsort(-pp)[0][0]]+ " (" +str(int(np.sort(-pp)[0][0]*-1))+"%)"
-    top2 = hiragana[np.argsort(-pp)[0][1]]+ " (" +str(int(np.sort(-pp)[0][1]*-1))+"%)"
-    top3 = hiragana[np.argsort(-pp)[0][2]]+ " (" +str(int(np.sort(-pp)[0][2]*-1))+"%)"
+    top1 = japanese[np.argsort(-pp)[0][0]]+ " (" +str(int(np.sort(-pp)[0][0]*-1))+"%)"
+    top2 = japanese[np.argsort(-pp)[0][1]]+ " (" +str(int(np.sort(-pp)[0][1]*-1))+"%)"
+    top3 = japanese[np.argsort(-pp)[0][2]]+ " (" +str(int(np.sort(-pp)[0][2]*-1))+"%)"
     print(top1)
 #    return int(r)
-    ret = hiragana[np.argsort(-pp)[0][0]]
+    ret = japanese[np.argsort(-pp)[0][0]]
     return ret,top1,top2,top3
 
 def get_answer(req):
@@ -66,9 +70,31 @@ def get_answer(req):
     cv2.imwrite(f"images/{datetime.now().strftime('%s')}.jpg",img_resize)
     print('ZZ')
     ans,t1,t2,t3 = result(img_resize)
+    try:
+        yomi = str(get_yomi(ans))
+        print(yomi)
+    except:
+        yomi = " "
 #    return int(ans),t1,t2,t3
-    return ans,t1,t2,t3
+    return ans,yomi,t1,t2,t3
+
+def get_yomi(character):
+    # convert character to he x unicode
+    letter_a = str(character)
+    decimal_a = ord(letter_a)
+    hex_A = hex(decimal_a)
+
+    # insert into api request format
+    request_url = "https://mojikiban.ipa.go.jp/mji/q?UCS=*"
+    request_url = request_url.replace('*', hex_A)
+
+    req = urllib.request.Request(request_url)
+
+    with urllib.request.urlopen(req) as res:
+        body = json.load(res)
+
+    return body['results'][0]['読み']
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=9008)
+    app.run(debug=False, host='0.0.0.0', port=9013)
 
