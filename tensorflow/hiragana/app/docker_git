@@ -1,0 +1,1 @@
+docker run -d -it --name hiragana --rm -p 9003:9003 sleepsonthefloor/graphpipe-tf:cpu --model=https://github.com/scpepper69/ml-image-classification/raw/master/tensorflow/hiragana/app/hiragana.pb --listen=0.0.0.0:9003
