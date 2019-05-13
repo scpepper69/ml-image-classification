@@ -2,7 +2,7 @@
 
 
 
-Sample application is published on [my blog](https://www.scpepper.tokyo/2019/01/16/post-244/).
+Sample application is published on [my blog](https://www.scpepper.tokyo/2018/12/26/post-222/).
 
 
 
@@ -30,7 +30,7 @@ Please see README.md at parent directory.
    ```bash
    # cd ./app
    # nohup python ./mnist.py &
-```
+   ```
    
    
 ## Architecture

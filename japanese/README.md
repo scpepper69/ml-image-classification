@@ -1,6 +1,6 @@
 # Japanese KANJI & HIRAGANA Prediction Application
 
-Sample application is published on [my blog](https://www.scpepper.tokyo/2019/01/16/post-244/).
+Sample application is published on [my blog](https://www.scpepper.tokyo/2019/04/18/post-313/).
 
 
 

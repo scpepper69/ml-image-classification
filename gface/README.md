@@ -2,7 +2,7 @@
 
 
 
-Sample application is published on [my blog](https://www.scpepper.tokyo/2019/01/16/post-244/).
+Sample application is published on [my blog](https://www.scpepper.tokyo/2019/03/27/post-269/).
 
 If you use the sample application, you upload image file focused on the gundam face and the shape of image file should be square.
 
