@@ -15,26 +15,21 @@ from matplotlib import pylab as plt
 
 
 app = Flask(__name__)
-CORS(app) # ローカルへAjaxでPOSTするため
+CORS(app) # To Post by Ajax
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         ans,t1,t2,t3 = get_answer(request)
-#        return jsonify({'ans': ans})
         return jsonify({'ans': ans, 't1': t1, 't2': t2, 't3': t3})
     else:
         return render_template('index.html')
 
 def result(img):
-#    K.clear_session() # セッションを毎回クリア
-#    model = load_model(os.path.abspath(os.path.dirname(__file__)) + '/model.h5')
-#    x = np.expand_dims(x, axis=0)
-#    x = x.reshape(x.shape[0],28,28,1)
     img = img.reshape(1, 784)
     img = img.astype(np.float32)
     img = np.multiply(img, 1.0 / 255.0)
-    pred = remote.execute("http://localhost:9002", img)
+    pred = remote.execute("http://localhost:9001", img)
     r = np.argmax(pred, axis=1)
     pp = pred*100
     top1 = str(np.argsort(-pp)[0][0])+ " (" +str(int(np.sort(-pp)[0][0]*-1))+"%)"
@@ -55,5 +50,4 @@ def get_answer(req):
     return int(ans),t1,t2,t3
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=9009)
-
+    app.run(debug=False, host='0.0.0.0', port=8001)

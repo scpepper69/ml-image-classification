@@ -49,7 +49,7 @@ def send():
             return render_template('index.html', img_url=outfile, ans=ans, t1=t1, t2=t2, t3=t3)
 #            return render_template('index.html', img_url=img_url, ans=ans, t1=t1, t2=t2, t3=t3)
         else:
-            return ''' <p>許可されていない拡張子です</p> '''
+            return ''' <p>This extension is not allowed.</p> '''
     else:
         return redirect(url_for('index'))
 
@@ -58,23 +58,16 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 def result(img):
-#    K.clear_session() # セッションを毎回クリア
-#    model = load_model(os.path.abspath(os.path.dirname(__file__)) + '/model.h5')
-#    x = np.expand_dims(x, axis=0)
-#    x = x.reshape(x.shape[0],28,28,1)
-#    img = img.reshape(1, 1024)
     img = img.reshape(1, 64, 64, 1)
     img = img.astype(np.float32)
     img = np.multiply(img, 1.0 / 255.0)
     pred = remote.execute("http://localhost:9004", img)
     r = np.argmax(pred, axis=1)
     pp = pred*100
-#    top1 = str(np.argsort(-pp)[0][0])+ " (" +str(int(np.sort(-pp)[0][0]*-1))+"%)"
     top1 = gface[np.argsort(-pp)[0][0]]+ " (" +str(int(np.sort(-pp)[0][0]*-1))+"%)"
     top2 = gface[np.argsort(-pp)[0][1]]+ " (" +str(int(np.sort(-pp)[0][1]*-1))+"%)"
     top3 = gface[np.argsort(-pp)[0][2]]+ " (" +str(int(np.sort(-pp)[0][2]*-1))+"%)"
     print(top1)
-#    return int(r)
     ret = gface[np.argsort(-pp)[0][0]]
     return ret,top1,top2,top3
 
@@ -103,11 +96,9 @@ def get_answer(img_path):
 #    cv2.imwrite(f"images/{datetime.now().strftime('%s')}.jpg",img_resize)
     print('ZZ')
     ans,t1,t2,t3 = result(img_resize)
-#    return int(ans),t1,t2,t3
     return outfile,ans,t1,t2,t3
-
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(debug=False, host='0.0.0.0', port=9007)    
+    app.run(debug=False, host='0.0.0.0', port=8004)    
 
