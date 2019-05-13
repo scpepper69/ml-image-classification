@@ -1,6 +1,16 @@
 # Machine Learning Image Classification Samples
 
 
+
+## List of Applications
+
+1. MNIST Prediction Web Application
+2. HIRAGANA  Prediction Web Application
+3. Japanese KANJI and HIRAGANA Prediction Web Application
+4. Gundam Face Prediction Web Application (Now Constructing)
+
+
+
 ## Prerequisites
 
 Programs in this repository are developed at Cent OS 7.6 or Ubuntu 18.04.2 TLS.
@@ -8,7 +18,7 @@ Programs in this repository are developed at Cent OS 7.6 or Ubuntu 18.04.2 TLS.
 Python and libraries version are followings.
 
  - Python 3.6.6
- - Tensorflow 1.13.1
+ - TensorFlow 1.13.1
  - GraphPipe 1.0.4
  - Flask 1.0.2
 

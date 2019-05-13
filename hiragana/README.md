@@ -1,9 +1,6 @@
 # Japanese HIRAGANA Prediction Application
 
-
-
 Sample application is published on [my blog](https://www.scpepper.tokyo/2019/01/16/post-244/).
-
 
 
 ## Application Image
@@ -21,20 +18,30 @@ Please see README.md at parent directory.
 1. docker run
 
    ```bash
-   # ./app/docker.sh
+   # cd ml-image-classification/hiragana/app/
+   # sh ./docker.sh
    ```
 
-1. Startup app.py
+1. Startup hiragana.py
 
    ```bash
-   # nohup python ./app/app/hiragana.py &
+   # cd ./app
+   # nohup python ./hiragana.py &
    ```
-
    
-## Architecture
+   
+## Application Architecture
 
-- Learning Model : Tensorflow & Keras
+- Learned Model : TensorFlow & Keras
 - Model Server : GraphPipe
-- Application : Python (Flask)
+- Web Application : Python (Flask)
 
-<img class="aligncenter size-full" src="https://drive.google.com/uc?export=view&id=1lT1dl5usZaU0laE9H1ig9tPpetn6sMiI">
+
+
+## Model Structure
+
+I used the dataset [ETL8G](http://etlcdb.db.aist.go.jp/?page_id=2461&lang=ja) and extracted only HIRAGANA characters by read_hiragana.py .
+
+Model structure is built by CNN. Please see learn_hiragana.py for details.
+
+
