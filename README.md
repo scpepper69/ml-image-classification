@@ -15,11 +15,20 @@
 
 Programs in this repository are developed at Cent OS 7.6 or Ubuntu 18.04.2 TLS.
 
+You need the Docker environment.
+
 Python and libraries version are followings.
 
  - Python 3.6.6
- - TensorFlow 1.13.1
+
+ - TensorFlow 1.11.1
+
+   The GraphPipe docker images published on public repository are built by TensorFlow 1.8 or 1.11.
+
+   In the case of using GraphPipe, you should use TensorFlow 1.11.0 
+
  - GraphPipe 1.0.4
+
  - Flask 1.0.2
 
 
