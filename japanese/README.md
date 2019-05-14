@@ -19,15 +19,15 @@ Please see README.md at parent directory.
 1. docker run
 
    ```bash
-   # cd ml-image-classification/japanese/app/
-   # sh ./docker.sh
+   cd ml-image-classification/japanese/app/
+   sh ./docker.sh
    ```
 
 1. Startup japanese.py
 
    ```bash
-   # cd ./app
-   # nohup python ./japanese.py &
+   cd ./app
+   nohup python ./japanese.py &
    ```
    
    

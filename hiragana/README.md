@@ -18,15 +18,15 @@ Please see README.md at parent directory.
 1. docker run
 
    ```bash
-   # cd ml-image-classification/hiragana/app/
-   # sh ./docker.sh
+   cd ml-image-classification/hiragana/app/
+   sh ./docker.sh
    ```
 
 1. Startup hiragana.py
 
    ```bash
-   # cd ./app
-   # nohup python ./hiragana.py &
+   cd ./app
+   nohup python ./hiragana.py &
    ```
    
    

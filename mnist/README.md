@@ -21,15 +21,15 @@ Please see README.md at parent directory.
 1. docker run
 
    ```bash
-   # cd ml-image-classification/mnist/app/
-   # ./app/docker.sh
+   cd ml-image-classification/mnist/app/
+   ./app/docker.sh
    ```
 
 1. Startup mnist.py
 
    ```bash
-   # cd ./app
-   # nohup python ./mnist.py &
+   cd ./app
+   nohup python ./mnist.py &
    ```
    
    
