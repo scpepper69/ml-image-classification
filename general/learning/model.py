@@ -1,3 +1,8 @@
+#------------------------------------------------------------------------------
+# Image Classification Model Builder
+# Copyright (c) 2019, scpepper All rights reserved.
+#------------------------------------------------------------------------------
+
 # モデル構築用ライブラリをインポート
 from tensorflow import keras
 from tensorflow.keras.models import Sequential, Model
