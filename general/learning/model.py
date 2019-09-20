@@ -2,22 +2,20 @@
 # Image Classification Model Builder
 # Copyright (c) 2019, scpepper All rights reserved.
 #------------------------------------------------------------------------------
-
-# モデル構築用ライブラリをインポート
 from tensorflow import keras
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, Activation, Flatten
 
-# CNNモデル用ライブラリ
 from tensorflow.python.keras.layers import Conv2D, Convolution2D, MaxPooling2D, Dropout, BatchNormalization, GlobalAveragePooling2D,AveragePooling2D,Input
 from tensorflow.python.keras import initializers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.regularizers import l2
 
-# モデルの「容器」を作成
 model = Sequential()
 
-# VGG16モデル
+#----------------------------------------------------------------
+# VGG16 Model
+#----------------------------------------------------------------
 def cnn_vgg16(input_shape, num_classes):
     input_tensor = Input(shape=input_shape)
     vgg16 = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)    
@@ -38,7 +36,9 @@ def cnn_vgg16(input_shape, num_classes):
         
     return vgg16_model
 
-# CNNモデル
+#----------------------------------------------------------------
+# Simple CNN Model
+#----------------------------------------------------------------
 def cnn_model(input_shape, num_classes):
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros(), input_shape=input_shape))
     model.add(Activation('relu'))
@@ -54,7 +54,9 @@ def cnn_model(input_shape, num_classes):
 
     return model
 
-# CNNモデル w/Dropout
+#----------------------------------------------------------------
+# Simple CNN Model w/ Dropout
+#----------------------------------------------------------------
 def cnn_w_dropout(input_shape, num_classes):
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros(), input_shape=input_shape))
     model.add(Activation('relu'))
@@ -72,7 +74,9 @@ def cnn_w_dropout(input_shape, num_classes):
 
     return model
     
-# CNNモデル w/Batch Normalization
+#----------------------------------------------------------------
+# Simple CNN Model w/ Batch Normalization
+#----------------------------------------------------------------
 def cnn_w_batchnorm(input_shape, num_classes):
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros(), input_shape=input_shape))
     model.add(Activation('relu'))
@@ -97,8 +101,9 @@ def cnn_w_batchnorm(input_shape, num_classes):
 
     return model
 
-# ResNetモデル from Keras Documentation
-
+#----------------------------------------------------------------
+# ResNet Model
+#----------------------------------------------------------------
 # Model parameter
 # ----------------------------------------------------------------------------
 #           |      | 200-epoch | Orig Paper| 200-epoch | Orig Paper| sec/epoch
@@ -125,7 +130,7 @@ version = 1
 #elif version == 2:
 #    depth = n * 9 + 2
 
-# ResNetモデル
+# ResNet Common Function
 def resnet_layer(inputs,
                  num_filters=16,
                  kernel_size=3,
@@ -170,7 +175,7 @@ def resnet_layer(inputs,
         x = conv(x)
     return x
 
-
+# ResNet v1 Model
 def resnet_v1(input_shape, num_classes, depth=20):
     """ResNet Version 1 Model builder [a]
 
@@ -244,7 +249,7 @@ def resnet_v1(input_shape, num_classes, depth=20):
     model = Model(inputs=inputs, outputs=outputs)
     return model
 
-
+# ResNet v2 Model
 def resnet_v2(input_shape, num_classes, depth=29):
     """ResNet Version 2 Model builder [b]
 
@@ -339,4 +344,3 @@ def resnet_v2(input_shape, num_classes, depth=29):
     # Instantiate model.
     model = Model(inputs=inputs, outputs=outputs)
     return model
-

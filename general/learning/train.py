@@ -152,7 +152,7 @@ model.summary()
 # Training the Model
 #----------------------------------------------------------------
 # Data generator parameter setting
-params = {
+"""params = {
     'rotation_range': 20,
     'zoom_range': 0.10,
     'height_shift_range': 0.1,
@@ -160,10 +160,58 @@ params = {
 }
 datagen = image.ImageDataGenerator(**params)
 datagen.fit(x_train)
+"""
+
+from keras.preprocessing import image
+from random import shuffle
+from scipy import ndimage
+
+def generator(x, y1, train):
+
+    while True:
+        if train:
+            keys = list(range(len(x)))
+            shuffle(keys)
+        else:
+            keys = list(range(len(y1)))
+            shuffle(keys)
+        inputs = []
+        label1 = []
+
+        for key in keys:
+            img = x[key]
+            if train:
+                # 画像の回転
+                rotate_rate = np.random.normal(0,0.5)*10
+                img = ndimage.rotate(x[key], rotate_rate)
+                img = cv2.resize(img,(width, height))
+                # 画像のぼかし
+                if np.random.randint(0,2):
+                    filter_rate = np.random.randint(0,6)
+                    img = ndimage.gaussian_filter(img, sigma=filter_rate)
+
+            inputs.append(img)
+            label1.append(y1[key])
+
+            if len(inputs) == batch_size:
+                tmp_inputs = np.array(inputs)
+                tmp_label1 = np.array(label1)
+                inputs = []
+                label1 = []
+                yield tmp_inputs, {'dense': tmp_label1}
+
+# 学習の実行 (fit_generator)
+result = model.fit_generator(generator(x_train, y_train, True),
+                             steps_per_epoch=x_train.shape[0], 
+                             epochs=epochs, 
+                             validation_data=generator(x_test, y_test, False), 
+                             validation_steps=2, 
+                             verbose=1)
+#                             callbacks=[tb_cb])
 
 # Execute training
 #result = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1,callbacks=[tb_cb, cp_cb], validation_data=(x_test, y_test))
-result = model.fit_generator(datagen.flow(x_train, y_train, batch_size=16), steps_per_epoch=x_train.shape[0], epochs=epochs, validation_data=(x_test, y_test))
+#result = model.fit_generator(datagen.flow(x_train, y_train, batch_size=16), steps_per_epoch=x_train.shape[0], epochs=epochs, validation_data=(x_test, y_test))
 
 # Evaluate the training score
 score = model.evaluate(x_test, y_test, verbose=0)
