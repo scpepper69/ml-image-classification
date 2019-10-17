@@ -11,27 +11,35 @@ from tensorflow.python.keras import initializers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.regularizers import l2
 
-model = Sequential()
-
 #----------------------------------------------------------------
 # VGG16 Model
 #----------------------------------------------------------------
 def cnn_vgg16(input_shape, num_classes):
+   
     input_tensor = Input(shape=input_shape)
     vgg16 = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)    
     
-    add_model = Sequential()
-    add_model.add(Flatten())
-    add_model.add(Dense(256, kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros()))
-    add_model.add(Activation('relu'))
-    add_model.add(BatchNormalization())
-    add_model.add(Dense(units=num_classes))
-    add_model.add(Activation('softmax'))
+    x=vgg16.output
+#    x=GlobalAveragePooling2D()(x)
+    x=Flatten()(x)
+    x=Dense(256,activation='relu')(x)
+    x=BatchNormalization()(x)
+    add_model=Dense(num_classes,activation='softmax')(x)
+
+#    add_model = Sequential()
+#    add_model.add(Flatten())
+#    add_model.add(Dense(256, kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros()))
+#    add_model.add(Activation('relu'))
+#    add_model.add(BatchNormalization())
+#    add_model.add(Dense(units=num_classes))
+#    add_model.add(Activation('softmax'))
     
-    vgg16_model = Model(inputs=vgg16.input, outputs=add_model(vgg16.output))
+#    vgg16_model = Model(inputs=vgg16.input, outputs=add_model(vgg16.output))
+    vgg16_model = Model(inputs=vgg16.input, outputs=add_model)
 
     #fix weights VGG16 layers
-    for layer in vgg16.layers:
+    for layer in vgg16_model.layers[:15]:
+#    for layer in vgg16.layers:
         layer.trainable = False
         
     return vgg16_model
@@ -40,6 +48,8 @@ def cnn_vgg16(input_shape, num_classes):
 # Simple CNN Model
 #----------------------------------------------------------------
 def cnn_model(input_shape, num_classes):
+
+    model = Sequential()
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros(), input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Conv2D(64, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros()))
@@ -58,6 +68,8 @@ def cnn_model(input_shape, num_classes):
 # Simple CNN Model w/ Dropout
 #----------------------------------------------------------------
 def cnn_w_dropout(input_shape, num_classes):
+
+    model = Sequential()
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros(), input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Conv2D(64, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros()))
@@ -78,6 +90,8 @@ def cnn_w_dropout(input_shape, num_classes):
 # Simple CNN Model w/ Batch Normalization
 #----------------------------------------------------------------
 def cnn_w_batchnorm(input_shape, num_classes):
+
+    model = Sequential()
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros(), input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Conv2D(32, (3, 3), kernel_initializer=initializers.TruncatedNormal(stddev=0.1), bias_initializer=initializers.Zeros()))
