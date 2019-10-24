@@ -1,0 +1,16 @@
+{
+  "name": "gface_prediction_by_tensorflowjs",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "PonDad",
+  "license": "MIT",
+  "description": "webcam sign language digits classification with TensorFlow.js "
+}

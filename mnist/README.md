@@ -2,7 +2,7 @@
 
 
 
-Sample application is published on [my blog](https://www.scpepper.tokyo/2019/01/16/post-244/).
+Sample application is published on [my blog](https://www.scpepper.tokyo/2018/12/26/post-222/).
 
 
 
@@ -21,20 +21,32 @@ Please see README.md at parent directory.
 1. docker run
 
    ```bash
-   # ./app/docker.sh
+   cd ml-image-classification/mnist/app/
+   ./app/docker.sh
    ```
 
-1. Startup app.py
+1. Startup mnist.py
 
    ```bash
-   # nohup python ./app/app/app.py &
+   cd ./app
+   nohup python ./mnist.py &
    ```
-
+   
    
 ## Architecture
 
-- Learning Model : Tensorflow & Keras
+- Learning Model : TensorFlow & Keras
 - Model Server : GraphPipe
-- Application : Python (Flask)
+- Web Application : Python (Flask)
 
-<img class="aligncenter size-full" src="https://drive.google.com/uc?export=view&id=1lT1dl5usZaU0laE9H1ig9tPpetn6sMiI">
+
+
+## Model Structure
+
+The models are based on TensorFlow Tutorials.
+
+- beginner-graph.pb
+- expert-graph.pb
+
+Model structure is built by CNN. Please see mnist_test_beginner.py and mnist_test_expert.py for details.
+
