@@ -18,7 +18,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras import losses
 from tensorflow.keras import callbacks
 from tensorflow.contrib import saved_model
-from keras.preprocessing import image
+from keras.preprocessing import image as keras_image
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -161,10 +161,9 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
         'height_shift_range': 0.1,
         'width_shift_range': 0.1
     }
-    datagen = image.ImageDataGenerator(**params)
+    datagen = keras_image.ImageDataGenerator(**params)
     datagen.fit(x_train)
 
-    from keras.preprocessing import image
     from random import shuffle
     from scipy import ndimage
 
