@@ -66,7 +66,8 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
     counters = np.zeros(num_classes, dtype=np.int)
 
     # Specify Dataset directory
-    dir_name='datasets/'+dataset_name
+#    dir_name='datasets/'+dataset_name
+    dir_name='datasets/'
 
     # Convert Image Data to Tensor
     for file in glob(gdrive_base + dir_name + '/*.jpg'):
