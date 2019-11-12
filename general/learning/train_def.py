@@ -44,7 +44,7 @@ from model import cnn_model, cnn_vgg16, cnn_w_dropout, cnn_w_batchnorm, resnet_v
 #epochs=local_conf.epochs
 #batch_size=local_conf.batch_size
 
-def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, height, color, model_opt, validate_rate=0.2, epochs=10, batch_size=16):
+def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, height, color, model_opt, validate_rate=0.2, epochs=10, batch_size=4):
 
     exec_date = datetime.now().strftime("%Y%m%d%H%M%S")
 
@@ -71,12 +71,15 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
 
     # Convert Image Data to Tensor
     for file in glob(gdrive_base + dir_name + '/*.jpg'):
-        img = cv2.imread(file,cv2.IMREAD_COLOR)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        for i in range(len(labels)):
-            if labels[i] in file:
-                ary[i, counters[i]] = img
-                counters[i] += 1
+        if color==1:
+            img = cv2.imread(file,cv2.IMREAD_GRAYSCALE)
+        else:
+            img = cv2.imread(file,cv2.IMREAD_COLOR)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            for i in range(len(labels)):
+                if labels[i] in file:
+                    ary[i, counters[i]] = img
+                    counters[i] += 1
 
     # Save as npz
     np.savez_compressed(f"{gdrive_base}{dir_name}.npz", ary)
@@ -117,9 +120,9 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
     # Building model
     if model_opt=="VGG16":
         model = cnn_vgg16(input_shape=input_shape, num_classes=num_classes)
-    elif model_opt=="RESNET1":
-        model = resnet_v1(input_shape=input_shape, num_classes=num_classes)
-    elif model_opt=="RESNET2":
+    #elif model_opt=="RESNET1":
+    #    model = resnet_v1(input_shape=input_shape, num_classes=num_classes)
+    elif model_opt=="RESNET":
         model = resnet_v2(input_shape=input_shape, num_classes=num_classes)
     else:
     #    model=cnn_model(input_shape=input_shape, num_classes=num_classes)
@@ -214,7 +217,7 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
 
     # Execute training
     #result = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1,callbacks=[tb_cb, cp_cb], validation_data=(x_test, y_test))
-    result = model.fit_generator(datagen.flow(x_train, y_train, batch_size=16), steps_per_epoch=x_train.shape[0], epochs=epochs, validation_data=(x_test, y_test))
+    result = model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size), steps_per_epoch=x_train.shape[0], epochs=epochs, validation_data=(x_test, y_test))
 
     # Evaluate the training score
     score = model.evaluate(x_test, y_test, verbose=0)
@@ -224,29 +227,34 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
     # Show accuracy graph
     result.history.keys() 
     print(epochs)
-    print(result.history['acc'])
-    plt.plot(range(1, epochs+1), result.history['acc'], label="training")
-    plt.plot(range(1, epochs+1), result.history['val_acc'], label="validation")
+    #plt.plot(range(1, epochs+1), result.history['acc'], label="training")
+    #plt.plot(range(1, epochs+1), result.history['val_acc'], label="validation")
+    plt.plot(result.history['acc'], label="training")
+    plt.plot(result.history['val_acc'], label="validation")
     plt.title('Accuracy History')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
-    plt.xlim([1,epochs])
+    #plt.xlim([1,epochs])
     plt.ylim([0,1])
-    plt.show()
-    #plt.savefig(f"{model_dir}{dataset_name}_{model_opt}_{exec_date}_acc.png")
+    #plt.show()
+    plt.savefig(f"{model_dir}{dataset_name}_{model_opt}_{exec_date}_acc.png")
+    plt.figure()
 
     # Show loss graph
-    plt.plot(range(1, epochs+1), result.history['loss'], label="training")
-    plt.plot(range(1, epochs+1), result.history['val_loss'], label="validation")
+    #plt.plot(range(1, epochs+1), result.history['loss'], label="training")
+    #plt.plot(range(1, epochs+1), result.history['val_loss'], label="validation")
+    plt.plot(result.history['loss'], label="training")
+    plt.plot(result.history['val_loss'], label="validation")
     plt.title('Loss History')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
-    plt.xlim([1,epochs])
+    #plt.xlim([1,epochs])
     plt.ylim([0,20])
-    plt.show()
-    #plt.savefig(f"{model_dir}{dataset_name}_{model_opt}_{exec_date}_loss.png")
+    #plt.show()
+    plt.savefig(f"{model_dir}{dataset_name}_{model_opt}_{exec_date}_loss.png")
+    plt.figure()
 
     # Predict validation data
     classes = model.predict(x_test, batch_size=128, verbose=1)
@@ -256,15 +264,29 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
     cmatrix_plt = pd.DataFrame(cmatrix, index=labels, columns=labels)
     plt.figure(figsize = (10,7))
     sns.heatmap(cmatrix_plt, annot=True, cmap="Reds", fmt="d")
-    plt.show()
-    #plt.savefig(f"{model_dir}{dataset_name}_{model_opt}_{exec_date}_confusion_matrix.png")
+    #plt.show()
+    plt.savefig(f"{model_dir}{dataset_name}_{model_opt}_{exec_date}_confusion_matrix.png")
 
     # Output model as keras format
     output_keras_name = f"{model_dir}{dataset_name}_{model_opt}_{epochs}_{exec_date}_frozen_graph.h5"
     model.save(output_keras_name, include_optimizer=False)
+    print("Saved Keras Model.")
+
+    output_tflite_name = f"{model_dir}{dataset_name}_{model_opt}_{epochs}_{exec_date}_frozen_graph.tflite"
+    converter = tf.lite.TFLiteConverter.from_keras_model_file(output_keras_name)
+    #converter = tf.lite.TFLiteConverter.from_session(sess, input_tensors=model.inputs, output_tensors=model.outputs) 
+    try:
+        tflite_model = converter.convert()
+    except:
+        import traceback
+        traceback.print_exc()
+    open(output_tflite_name, "wb").write(tflite_model)
+    print("Saved TFLite Model.")
 
     # Output model as tensorflow saved model format
-    out_tf_saved_model = f"{model_dir}{dataset_name}_{model_opt}_{epochs}_{exec_date}_saved_models"
-    if os.path.exists(out_tf_saved_model):
-        shutil.rmtree(out_tf_saved_model)
-    saved_model_path = saved_model.save_keras_model(model, out_tf_saved_model)
+    #out_tf_saved_model = f"{model_dir}{dataset_name}_{model_opt}_{epochs}_{exec_date}_saved_models"
+    #if os.path.exists(out_tf_saved_model):
+    #    shutil.rmtree(out_tf_saved_model)
+    #saved_model_path = saved_model.save_keras_model(model, out_tf_saved_model)
+
+    return score[1], score[0]
