@@ -44,7 +44,7 @@ from model import cnn_model, cnn_vgg16, cnn_w_dropout, cnn_w_batchnorm, resnet_v
 #epochs=local_conf.epochs
 #batch_size=local_conf.batch_size
 
-def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, height, color, model_opt, validate_rate=0.2, epochs=10, batch_size=4):
+def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, height, color, model_opt, validate_rate=0.2, epochs=20, batch_size=4):
 
     exec_date = datetime.now().strftime("%Y%m%d%H%M%S")
 
@@ -215,9 +215,11 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
     #                             callbacks=[tb_cb])
     """
 
+    early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=5, verbose=1)
+
     # Execute training
     #result = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1,callbacks=[tb_cb, cp_cb], validation_data=(x_test, y_test))
-    result = model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size), steps_per_epoch=x_train.shape[0], epochs=epochs, validation_data=(x_test, y_test))
+    result = model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size), steps_per_epoch=x_train.shape[0], epochs=epochs, validation_data=(x_test, y_test), callbacks=[early_stopping])
 
     # Evaluate the training score
     score = model.evaluate(x_test, y_test, verbose=0)
