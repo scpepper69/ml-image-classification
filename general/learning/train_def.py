@@ -74,15 +74,16 @@ def main(gdrive_base, dataset_name, num_classes, labels, num_images, width, heig
         if color==1:
             img = cv2.imread(file,cv2.IMREAD_GRAYSCALE)
         else:
+            print(color)
             img = cv2.imread(file,cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             for i in range(len(labels)):
-                if labels[i] in file:
+                if "/"+labels[i] in file:
                     ary[i, counters[i]] = img
                     counters[i] += 1
 
     # Save as npz
-    np.savez_compressed(f"{gdrive_base}{dir_name}.npz", ary)
+    np.savez_compressed(f"{gdrive_base}{dir_name}np.npz", ary)
 
     # Restore from npz
     #ary = np.load(f"{gdrive_base}{dir_name}.npz")['arr_0']
